@@ -10,11 +10,10 @@ with open(json_settings_path, 'r') as settings_file:
     settings = json.load(settings_file)
     settings_file.close()
 
-photos_path = 'photos'
+photos_path = '..\\photos'
 
 photos = os.listdir(photos_path)
 random_bg = random.choice(photos)
-
 
 
 with open(json_settings_path, 'w') as settings_file:
