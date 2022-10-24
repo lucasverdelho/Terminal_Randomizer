@@ -1,3 +1,4 @@
+from genericpath import exists
 import os
 # import random
 # import json
@@ -42,7 +43,12 @@ def rgb_to_hex(rgb_color):
 #     plt.savefig("color_analysis_report.png")
 #     print(hex_colors)
 
-
+def get_complementary(color):
+    color = color[1:]
+    color = int(color, 16)
+    comp_color = int("0xFFFFFF", base=16) - color
+    comp_color = hex(comp_color)
+    return str(comp_color).replace("0x", "#")
 
 
 photos_path = '..\\photos'
@@ -73,10 +79,11 @@ for i in photos:
     filename = "..\\thumbnails\\" + i[:-4] + ".txt"
     filename = filename.replace("converted", "")
 
+
     with open((filename), "a") as f:
+        f.write(get_complementary(rgb_to_hex(palette[4])) + "\n")
         for j in palette:
             temp_list = list(j)
-            print(rgb_to_hex(j))
             f.write(rgb_to_hex(j) + "\n")
         f.write("\n")
 
