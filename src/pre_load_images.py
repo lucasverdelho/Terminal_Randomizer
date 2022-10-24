@@ -1,18 +1,20 @@
 import os
-import random
-import json
-from collections import Counter
-import matplotlib.image as mpimg
-from matplotlib import colors
-import matplotlib.pyplot as plt
-import pandas as pd
-from scipy.cluster.vq import whiten
-from sklearn.cluster import KMeans
-import numpy as np
-import cv2
+# import random
+# import json
+# from collections import Counter
+# import matplotlib.image as mpimg
+# from matplotlib import colors
+# import matplotlib.pyplot as plt
+# import pandas as pd
+# from scipy.cluster.vq import whiten
+# from sklearn.cluster import KMeans
+# import cv2
+# from glob import glob
+# import PIL
+# import numpy as np
 from PIL import Image
-from glob import glob
-import PIL
+from colorthief import ColorThief
+import matplotlib.pyplot as plt
 
 
 
@@ -23,22 +25,22 @@ def rgb_to_hex(rgb_color):
         hex_color += ("{:02x}".format(i))
     return hex_color
 
-def prep_image(raw_img):
-    modified_img = cv2.resize(raw_img, (900, 600), interpolation = cv2.INTER_AREA)
-    modified_img = modified_img.reshape(modified_img.shape[0]*modified_img.shape[1], 3)
-    return modified_img
+# def prep_image(raw_img):
+#     modified_img = cv2.resize(raw_img, (900, 600), interpolation = cv2.INTER_AREA)
+#     modified_img = modified_img.reshape(modified_img.shape[0]*modified_img.shape[1], 3)
+#     return modified_img
 
-def color_analysis(img):
-    clf = KMeans(n_clusters = 5)
-    color_labels = clf.fit_predict(img)
-    center_colors = clf.cluster_centers_
-    counts = Counter(color_labels)
-    ordered_colors = [center_colors[i] for i in counts.keys()]
-    hex_colors = [rgb_to_hex(ordered_colors[i]) for i in counts.keys()]
-    plt.figure(figsize = (12, 8))
-    plt.pie(counts.values(), color_labels = hex_colors, colors = hex_colors)
-    plt.savefig("color_analysis_report.png")
-    print(hex_colors)
+# def color_analysis(img):
+#     clf = KMeans(n_clusters = 5)
+#     color_labels = clf.fit_predict(img)
+#     center_colors = clf.cluster_centers_
+#     counts = Counter(color_labels)
+#     ordered_colors = [center_colors[i] for i in counts.keys()]
+#     hex_colors = [rgb_to_hex(ordered_colors[i]) for i in counts.keys()]
+#     plt.figure(figsize = (12, 8))
+#     plt.pie(counts.values(), color_labels = hex_colors, colors = hex_colors)
+#     plt.savefig("color_analysis_report.png")
+#     print(hex_colors)
 
 
 
@@ -62,16 +64,34 @@ for i in photos:
 
 
 photos = os.listdir(os.path.abspath("..\\thumbnails"))
-# # Load image
-for i in photos:
-    thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
 
-    image = cv2.imread(thumbnail_path)
-    print(image.shape)
-    image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
-    modified_image = prep_image(image)
-    primary_colors = color_analysis(modified_image)
-    image.close()
+
+for i in photos:
+    temp_path = os.path.join(os.path.abspath("..\\thumbnails"), i)
+    img = ColorThief(temp_path)
+    palette = img.get_palette(color_count = 5)
+    filename = "..\\thumbnails\\" + i[:-4] + ".txt"
+    filename = filename.replace("converted", "")
+
+    with open((filename), "a") as f:
+        for j in palette:
+            temp_list = list(j)
+            print(rgb_to_hex(j))
+            f.write(rgb_to_hex(j) + "\n")
+        f.write("\n")
+
+
+
+# # Load image
+# for i in photos:
+#     thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
+
+#     image = cv2.imread(thumbnail_path)
+#     print(image.shape)
+#     image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
+#     modified_image = prep_image(image)
+#     primary_colors = color_analysis(modified_image)
+#     image.close()
 
 
 
