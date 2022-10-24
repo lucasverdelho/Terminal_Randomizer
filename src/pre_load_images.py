@@ -42,11 +42,17 @@ def color_analysis(img):
 
 
 
-# Choose random picture from folder
+
 photos_path = '..\\photos'
 photos = os.listdir(photos_path)
 
 for i in photos:
+    thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
+
+    # if os.path.exists(thumbnail_path):
+    #     print("Thumbnail already exists")
+    #     continue
+
     img = Image.open(os.path.join(os.path.abspath(photos_path), i))
     newImage = img.convert('RGBA')
     bg = Image.new('RGBA', newImage.size)
@@ -55,14 +61,20 @@ for i in photos:
     img.close()
 
 
-
+photos = os.listdir(os.path.abspath("..\\thumbnails"))
 # # Load image
+for i in photos:
+    thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
 
-# image = cv2.imread(os.path.join(os.path.abspath(photos_path), random_bg))
-# image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = cv2.imread(thumbnail_path)
+    print(image.shape)
+    image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
+    modified_image = prep_image(image)
+    primary_colors = color_analysis(modified_image)
+    image.close()
 
-# modified_image = prep_image(image)
-# primary_colos = color_analysis(modified_image)
+
+
 
 
 
