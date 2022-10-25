@@ -28,6 +28,8 @@ photos = os.listdir(photos_path)
 for i in photos:
     thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
 
+    if (os.path.exists(os.path.join(thumbnail_path, i[:-4] + ".png"))):
+        continue
     img = Image.open(os.path.join(os.path.abspath(photos_path), i))
     newImage = img.convert('RGBA')
     bg = Image.new('RGBA', newImage.size)
@@ -44,18 +46,17 @@ for i in photos:
         os.remove(os.path.join(photos_path, i))
         continue
     
-    if (os.path.exists(os.path.join(photos_path, i[:-4] + ".png"))):
-        continue
+    
 
     temp_path = os.path.join(photos_path, i)
     img = ColorThief(temp_path)
-    palette = img.get_palette(color_count = 5)
+    palette = img.get_palette(color_count = 3)
     filename = photos_path + i[:-4] + ".txt"
     filename = filename.replace("converted", "")
 
     try:
         with open(filename, "w") as f:
-            f.write(get_complementary(rgb_to_hex(palette[4])) + "\n")
+            f.write(get_complementary(rgb_to_hex(palette[3])) + "\n")
             for i in palette:
                 f.write(rgb_to_hex(i) + "\n")
     except Exception as e:
