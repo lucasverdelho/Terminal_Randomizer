@@ -30,11 +30,13 @@ for i in photos:
 
     if (os.path.exists(os.path.join(thumbnail_path, i[:-4] + ".png"))):
         continue
+
+    # Convert Gif to PNG
     img = Image.open(os.path.join(os.path.abspath(photos_path), i))
     newImage = img.convert('RGBA')
     bg = Image.new('RGBA', newImage.size)
     image = Image.composite(newImage, bg, newImage)
-    image.save("..\\thumbnails\\converted" + i[:-4] + ".png")
+    image.save("..\\thumbnails\\zconverted" + i[:-4] + ".png")
     img.close()
 
 
@@ -51,7 +53,7 @@ for i in photos:
     temp_path = os.path.join(photos_path, i)
     img = ColorThief(temp_path)
     palette = img.get_palette(color_count = 3)
-    filename = photos_path + i[:-4] + ".txt"
+    filename = photos_path + i[1:-4] + ".txt"
     filename = filename.replace("converted", "")
 
     try:
