@@ -1,7 +1,8 @@
 import os
 import random
 import json
-import time
+import re
+from turtle import color
 
 
 
@@ -29,11 +30,15 @@ with open(colors_path, 'r') as f:
     f.close()
 
 # Select Random Color From Given Set
-random_color = random.choice(colors)
+
+with open('font_colors.txt', 'r') as f:
+    colors = f.readlines()
+
+font_colors = str(colors).split(", ")
+random_color = re.search("#[A-Za-z0-9]*",random.choice(font_colors)).group(0)
 
 
-# Mudar a imagem a cada x segundos
-# while True:
+
 
 
 # Write all parameters to be change to the settings.json file
@@ -42,16 +47,12 @@ with open(json_settings_path, 'w') as settings_file:
     settings['profiles']['list'][1]['cursorColor'] = colors[3].replace('\n', '')
     settings['profiles']['list'][1]['selectionBackground'] = colors[1].replace('\n', '')
     settings['profiles']['list'][1]['backgroundImage'] = os.path.join(os.path.abspath(photos_path), random_bg)
-    #settings['profiles']['list'][1]['foreground'] = colors[3].replace('\n', '')
-    settings['profiles']['list'][1]['backgroundImageOpacity'] = random.uniform(0.3, 0.5)
+    #settings['profiles']['list'][1]['foreground'] = colors[1].replace('\n', '')
+    settings['profiles']['list'][1]['foreground'] = random_color.replace('\n', '')
+    settings['profiles']['list'][1]['backgroundImageOpacity'] = random.uniform(0.3, 0.4)
+
     json.dump(settings, settings_file, indent=4)
 
 
-    #     random_bg = random.choice(photos)
-    #     settings['profiles']['list'][1]['backgroundImage'] = os.path.join(os.path.abspath(photos_path), random_bg)        
-    #     json.dump(settings, settings_file, indent=4)
-    #     time.sleep(2)
-    # 
-
-
-
+# TODO
+# 1. Correr o script pre load caso nao existam ficheiros na pasta thumbnails
