@@ -37,22 +37,29 @@ for i in photos:
 
 
 photos = os.listdir(os.path.abspath("..\\thumbnails"))
-
+photos_path = "..\\thumbnails\\"
 
 for i in photos:
-    temp_path = os.path.join(os.path.abspath("..\\thumbnails"), i)
+    if (i[-4:] == ".txt"):
+        os.remove(os.path.join(photos_path, i))
+        continue
+    
+    if (os.path.exists(os.path.join(photos_path, i[:-4] + ".png"))):
+        continue
+
+    temp_path = os.path.join(photos_path, i)
     img = ColorThief(temp_path)
     palette = img.get_palette(color_count = 5)
-    filename = "..\\thumbnails\\" + i[:-4] + ".txt"
+    filename = photos_path + i[:-4] + ".txt"
     filename = filename.replace("converted", "")
 
-
-    with open((filename), "a") as f:
-        f.write(get_complementary(rgb_to_hex(palette[4])) + "\n")
-        for j in palette:
-            temp_list = list(j)
-            f.write(rgb_to_hex(j) + "\n")
-        f.write("\n")
+    try:
+        with open(filename, "w") as f:
+            f.write(get_complementary(rgb_to_hex(palette[4])) + "\n")
+            for i in palette:
+                f.write(rgb_to_hex(i) + "\n")
+    except Exception as e:
+        print(e)
 
 
 
