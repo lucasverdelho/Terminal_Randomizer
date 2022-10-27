@@ -6,7 +6,7 @@ import re
 
 
 # Find path to settings.json from input file
-with open('input.txt', 'r') as f:
+with open('..\\input_files\\input.txt', 'r') as f:
     json_settings_path = f.readline().replace('\n', '')
     
 # Load settings.json file
@@ -30,7 +30,7 @@ with open(colors_path, 'r') as f:
 
 # Select Random Color From Given Set
 
-with open('font_colors.txt', 'r') as f:
+with open('..\\input_files\\font_colors.txt', 'r') as f:
     colors = f.readlines()
 
 font_colors = str(colors).split(", ")
