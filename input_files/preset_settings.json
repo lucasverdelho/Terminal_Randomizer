@@ -29,8 +29,37 @@
     "copyFormatting": "none",
     "copyOnSelect": false,
     "defaultProfile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+    "initialRows": 20,
+    "initialCols": 70,
     "profiles": {
-        "defaults": {},
+        "defaults": {
+            "adjustIndistinguishableColors": false,
+            "backgroundImage": "D:\\Desktop\\Terminal_Randomizer\\photos\\tumblr_d4116d93eccf12e8278a3e4e2d750028_195708b5_540.gif",
+            "backgroundImageOpacity": 0.3834677638969509,
+            "colorScheme": "Campbell",
+            "commandline": "%SystemRoot%\\System32\\cmd.exe",
+            "cursorColor": "#71bac6",
+            "cursorShape": "vintage",
+            "experimental.pixelShaderPath": "D:\\Desktop\\Terminal_Randomizer\\input_files\\Retro.hlsl",
+            "font": {
+                "face": "Source Code Pro",
+                "size": 20,
+                "weight": "light"
+            },
+            "foreground": "#a0adb4",
+            "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+            "hidden": true,
+            "icon": "C:\\Users\\lv\\Downloads\\random images\\terminal.ico",
+            "intenseTextStyle": "bright",
+            "name": "Terminal",
+            "opacity": 100,
+            "padding": "15",
+            "selectionBackground": "#28353c",
+            "useAcrylic": false,
+            "tabColor": "#28353c",
+            "tabTitle": "Terminal",
+            "startingDirectory": "D:\\Desktop"
+        },
         "list": [
             {
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
@@ -40,45 +69,35 @@
             },
             {
                 "adjustIndistinguishableColors": false,
-                "backgroundImage": "C:\\Users\\lv\\Desktop\\Terminal_Randomizer\\photos\\450cac79c0828ca950c1325830515d23.gif",
-                "backgroundImageOpacity": 0.3245105519736398,
+                "backgroundImage": "D:\\Desktop\\Terminal_Randomizer\\photos\\200 (1).gif",
+                "backgroundImageOpacity": 0.38319717035006523,
                 "colorScheme": "Campbell",
                 "commandline": "%SystemRoot%\\System32\\cmd.exe",
-                "cursorColor": "#f3f9a5",
-                "experimental.pixelShaderPath": "C:\\Users\\lv\\Downloads\\random images\\terminal-main\\samples\\PixelShaders\\Retro.hlsl",
+                "cursorColor": "#708d8d",
+                "experimental.pixelShaderPath": "D:\\Desktop\\Terminal_Randomizer\\input_files\\Retro.hlsl",
                 "font": {
                     "face": "Source Code Pro",
                     "size": 20,
                     "weight": "light"
                 },
-                "foreground": "#f3f9a5",
+                "foreground": "#9fb2c2",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": true,
-                "icon": "C:\\Users\\lv\\Downloads\\random images\\terminal.ico",
+                "icon": "D:\\Downloads\\terminal.ico",
                 "intenseTextStyle": "bright",
                 "name": "Terminal",
                 "opacity": 100,
                 "padding": "15",
-                "selectionBackground": "#a5f9f9",
-                "useAcrylic": false
+                "selectionBackground": "#273a4a",
+                "useAcrylic": false,
+                "tabColor": "#273a4a",
+                "startingDirectory": "D:\\Desktop"
             },
             {
                 "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
                 "hidden": false,
                 "name": "Azure Cloud Shell",
                 "source": "Windows.Terminal.Azure"
-            },
-            {
-                "guid": "{8dc8c238-4337-55cb-acc1-76082a1b7df2}",
-                "hidden": false,
-                "name": "Developer Command Prompt for VS 2022",
-                "source": "Windows.Terminal.VisualStudio"
-            },
-            {
-                "guid": "{d4fc7c9d-6524-58a9-9453-6d591a86a470}",
-                "hidden": false,
-                "name": "Developer PowerShell for VS 2022",
-                "source": "Windows.Terminal.VisualStudio"
             }
         ]
     },
