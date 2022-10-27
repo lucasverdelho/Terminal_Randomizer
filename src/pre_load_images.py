@@ -1,8 +1,6 @@
-from genericpath import exists
 import os
 from PIL import Image
 from colorthief import ColorThief
-import matplotlib.pyplot as plt
 
 
 
