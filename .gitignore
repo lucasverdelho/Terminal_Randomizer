@@ -6,3 +6,4 @@ thumbnails/
 src/input.txt
 WinTerminal.lnk
 WinTerminal_Run.bat
+.gitignore
