@@ -3,7 +3,7 @@ from PIL import Image
 from colorthief import ColorThief
 
 
-
+# Function that convers a tuple of RGB values to a hex string
 def rgb_to_hex(rgb_color):
     hex_color = "#"
     for i in rgb_color:
@@ -12,6 +12,8 @@ def rgb_to_hex(rgb_color):
     return hex_color
 
 
+# Function that returns the complimentary of a given color
+# TODO - Still not working great, need to brighten the output color as it is unreadable
 def get_complementary(color):
     color = color[1:]
     color = int(color, 16)
@@ -20,9 +22,11 @@ def get_complementary(color):
     return str(comp_color).replace("0x", "#")
 
 
+# Define the path of the photos folder
 photos_path = '..\\photos'
 photos = os.listdir(photos_path)
 
+# Check if a thumbnail already exists for the gif, else create one, converting the GIF to a PNG
 for i in photos:
     thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
 
@@ -38,20 +42,24 @@ for i in photos:
     img.close()
 
 
-photos = os.listdir(os.path.abspath("..\\thumbnails"))
-photos_path = "..\\thumbnails\\"
+# Define the path of the thumbnails folder
+thumbnails = os.listdir(os.path.abspath("..\\thumbnails"))
+thumbnails_path = "..\\thumbnails\\"
 
-for i in photos:
+
+# To get the colors from the thumbnails
+# TODO - Improve the color selection
+for i in thumbnails:
     if (i[-4:] == ".txt"):
-        os.remove(os.path.join(photos_path, i))
+        os.remove(os.path.join(thumbnails_path, i))
         continue
     
-    
-
-    temp_path = os.path.join(photos_path, i)
+    # Get the colors from the image into a pallette and write them 
+    # to a txt file with the same name as the original gif
+    temp_path = os.path.join(thumbnails_path, i)
     img = ColorThief(temp_path)
     palette = img.get_palette(color_count = 3)
-    filename = photos_path + i[1:-4] + ".txt"
+    filename = thumbnails_path + i[1:-4] + ".txt"
     filename = filename.replace("converted", "")
 
     try:
@@ -62,13 +70,6 @@ for i in photos:
     except Exception as e:
         print(e)
 
-
-
-# TODO
-# Limpar o codigo e meter comments
-# Fazer o script para apagar os ficheiros .txt cada vez que o programa é executado
-# Escolher uma cor para o texto com base na imagem, talvez com o colorthief
-# Fazer o batch file alternar os fundos a cada 5 ou 10 ssegundos
 
 
 
