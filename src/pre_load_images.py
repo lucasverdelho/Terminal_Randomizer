@@ -34,6 +34,11 @@ def get_complementary(color):
     return str(comp_color).replace("0x", "#")
 
 
+def is_dark_color(color):
+    return sum(color) < 200
+
+
+
 # Define the path of the photos folder
 photos_path = '..\\photos'
 photos = os.listdir(photos_path)
@@ -59,6 +64,7 @@ thumbnails = os.listdir(os.path.abspath("..\\thumbnails"))
 thumbnails_path = "..\\thumbnails\\"
 
 
+
 # To get the colors from the thumbnails
 for i in thumbnails:
     if (i[-4:] == ".txt"):
@@ -73,8 +79,6 @@ for i in thumbnails:
     filename = thumbnails_path + i[1:-4] + ".txt"
     filename = filename.replace("converted", "")
 
-    def is_dark_color(color):
-        return sum(color) < 382
 
     try:
         with open(filename, "w") as f:
