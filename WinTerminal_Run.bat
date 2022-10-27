@@ -1,4 +1,5 @@
 @echo off
+D:
 cd "D:\Desktop\Terminal_Randomizer\src"
 
 python terminal_randomizer.py
