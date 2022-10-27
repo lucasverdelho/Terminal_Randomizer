@@ -1,4 +1,1 @@
-
-<Path to the settings.json file in the windows terminal folder> 
-Usually located in:
-C:\Users\*your_user_here\AppData\Local\Packages\Microsoft.WindowsTerminal(...)\LocalState\settings.json
+C:\Users\despacito\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
