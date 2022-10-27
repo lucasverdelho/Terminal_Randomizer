@@ -2,7 +2,6 @@ import os
 import random
 import json
 import re
-from turtle import color
 
 
 
