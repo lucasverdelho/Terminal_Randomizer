@@ -46,7 +46,8 @@ with open(json_settings_path, 'w') as settings_file:
     settings['profiles']['list'][1]['selectionBackground'] = colors[1].replace('\n', '')
     settings['profiles']['list'][1]['tabColor'] = colors[1].replace('\n', '')
     settings['profiles']['list'][1]['backgroundImage'] = os.path.join(os.path.abspath(photos_path), random_bg)
-    settings['profiles']['list'][1]['foreground'] = random_color.replace('\n', '')
+    # settings['profiles']['list'][1]['foreground'] = random_color.replace('\n', '')
+    settings['profiles']['list'][1]['foreground'] = colors[0].replace('\n', '')
     settings['profiles']['list'][1]['backgroundImageOpacity'] = random.uniform(0.3, 0.4)
 
     json.dump(settings, settings_file, indent=4)
