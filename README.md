@@ -5,6 +5,7 @@ A script that changes the appearance of a Windows Terminal, randomly selecting b
 ## Test Gif
 ![general_kenobi](https://user-images.githubusercontent.com/62015174/199112782-bd6ed7fe-e227-406c-819a-37b13e3bafd3.gif)
 
+![](https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/general_kenobi.gif?raw=true)
 
 ![github](https://github.com/Terminal_Randomizer/readme_assets/hello_there.gif)
 
