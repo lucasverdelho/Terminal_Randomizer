@@ -1,7 +1,9 @@
 # Terminal_Randomizer
 A script that changes the appearance of a Windows Terminal, randomly selecting background, foreground colors as well as the background gif
 
+![](https://github.com/Terminal_Randomizer/reamde_assets/GIF HELLO THERE.gif)
 
+![](https://github.com/Terminal_Randomizer/reamde_assets/GIF GENERAL KENOBI.gif)
 
 
 ## How to Use
