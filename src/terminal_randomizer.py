@@ -26,7 +26,7 @@ def first_run(json_settings_path):
     photos_path = os.path.abspath('..\\photos')
     input_path = os.path.abspath('..\\input_files')
 
-    photo = os.path.join(photos_path, "giphy.gif")
+    photo = os.path.join(photos_path, "GIF (7).gif")
     shader = os.path.join(input_path, "Retro.hlsl")
 
     
