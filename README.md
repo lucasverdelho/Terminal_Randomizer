@@ -37,7 +37,7 @@ where you change the Path to wherever you downloaded the repository.
 python terminal_randomizer.py
 ```
 
-6. If it changed, means everything is probably working. In case it didn't work, check the following segment: **"How to Find the Paths"**
+7. If it changed, means everything is probably working. In case it didn't work, check the following segment: **"How to Find the Paths"**
 
 
 Note : 
