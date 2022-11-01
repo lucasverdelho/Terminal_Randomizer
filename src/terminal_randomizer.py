@@ -3,10 +3,9 @@ import random
 import json
 import re
 
-from matplotlib.font_manager import json_load
 
 
-# Import the settings from the preset_settings.json file and change the paths to generic
+# Set the default color scheme
 def first_run(json_settings_path):
     
     os.mkdir("..\\thumbnails")
@@ -14,26 +13,41 @@ def first_run(json_settings_path):
     import pre_load_images
     pre_load_images.main()
 
-    # Find path to settings.json from input file and copy the preset settings into it
-
-    with open(json_settings_path, 'r') as preset:
-        preset_settings = json.load(preset)
+    # Make a backup of the settings.json file
+    with open(json_settings_path, 'r') as settings_file:
+        settings = json.load(settings_file)
+    
+    with open('..\\input_files\\json_settings_backup.json', 'w') as backup_settings_file:
+        json.dump(settings, backup_settings_file, indent=4)
 
     
     photos_path = os.path.abspath('..\\photos')
     input_path = os.path.abspath('..\\input_files')
 
-    preset_settings['profiles']['defaults']['backgroundImage'] = os.path.join(photos_path, "giphy.gif")
-    preset_settings['profiles']['defaults']['experimental.pixelShaderPath'] = os.path.join(input_path, "Retro.hlsl")
-    preset_settings['profiles']['defaults']['icon'] = os.path.join(input_path, "terminal.ico")
+    photo = os.path.join(photos_path, "giphy.gif")
+    shader = os.path.join(input_path, "Retro.hlsl")
+
+    
+    with open("..\\input_files\\last_run_info.txt", 'w') as last_run_info:
+        last_run_info.write(str(len(os.listdir(photos_path))))
+
+
 
     with open(json_settings_path, 'r') as f:
         data = json.load(f)
+     
+    data['profiles']['defaults'].update({"backgroundImage": photo})
+    data['profiles']['defaults'].update({"backgroundImageOpacity": 0.3})
+    data['profiles']['defaults'].update({"cursorColor": "#71BAC6"})
+    data['profiles']['defaults'].update({"experimental.pixelShaderPath": shader})
+    data['profiles']['defaults'].update({"foreground":"#5bd9d0"})
+    data['profiles']['defaults'].update({"selectionBackground":"#634570"})
+    data['profiles']['defaults'].update({"padding":"15"})
+    data['profiles']['defaults'].update({"tabColor":"#df93e1"})
 
-    preset_settings['profiles']['list'] = data['profiles']['list'] 
 
     with open(json_settings_path, 'w') as f:
-        json.dump(preset_settings, f, indent=4)
+        json.dump(data, f, indent=4)
 
 
 def main():
@@ -41,9 +55,23 @@ def main():
     # Json Settings Path
     json_settings_path = os.path.expandvars(r'%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json')
     
-    # Check if this is the first run
-    if (not os.path.exists("..\\thumbnails")):
+
+    # If there isn't a cache file means it is the first time executing the program
+    if (not os.path.exists("..\\last_run_info.txt")):
         first_run(json_settings_path)
+     
+
+    # Get the number of photos in the last execution
+    with open("..\\input_files\\last_run_info.txt", 'r') as last_run_info:
+        last_run = int(last_run_info.readline())
+
+    # if the number of photos in the last execution is different from the current number of photos reload images
+    if (last_run != len(os.listdir('..\\photos'))):
+        import pre_load_images
+        pre_load_images.main()
+
+        with open("..\\input_files\\last_run_info.txt", 'w') as last_run_info:
+            last_run_info.write(str(len(os.listdir('..\\photos'))))
 
 
     # Load settings.json file
@@ -76,8 +104,7 @@ def main():
     # colors[0] = re.search("#[A-Za-z0-9]*",random.choice(font_colors)).group(0)
 
 
-
-    # Write all parameters to be change to the settings.json file
+    # Write all parameters to be changed to the settings.json file
     with open(json_settings_path, 'w') as settings_file:
 
         settings['profiles']['list'][1]['cursorColor'] = colors[3].replace('\n', '')
