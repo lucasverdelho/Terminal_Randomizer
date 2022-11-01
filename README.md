@@ -16,15 +16,20 @@ A script that changes the appearance of a Windows Terminal, randomly selecting b
 
 2. You will also need to have python installed and to have this repository downloaded somewhere on your pc where you will be able to remember it's location.
 
-3. Go to the input.txt file on this repository and change the user to your own.
+3. Excute the following command in order to install necessary libraries:
+```
+pip install pillow colorthief
+```
 
-4. Open your Windows Terminal and change the directory to:
+4. Go to the input.txt file on this repository and change the user to your own.
+
+5. Open your Windows Terminal and change the directory to:
 ```
 %The_Path_To_The_Repository%\Terminal_Randomizer\src
 ```
 where you change the Path to wherever you downloaded the repository.
 
-5. Run the following command:
+6. Run the following command:
 ```
 python terminal_randomizer.py
 ```
