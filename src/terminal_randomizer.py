@@ -3,6 +3,11 @@ import random
 import json
 import re
 
+# TODO
+# SAVE OLD PROFILES
+# MUDAR A FONT
+
+
 
 # Import the settings from the preset_settings.json file and change the paths to generic
 def first_run():

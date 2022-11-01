@@ -41,11 +41,6 @@
             "cursorColor": "#71BAC6",
             "cursorShape": "vintage",
             "experimental.pixelShaderPath": "D:\\Desktop\\Terminal_Randomizer\\input_files\\Retro.hlsl",
-            "font": {
-                "face": "Source Code Pro",
-                "size": 20,
-                "weight": "light"
-            },
             "foreground": "#78f7ee",
             "hidden": true,
             "icon": "D:\\Desktop\\Terminal_Randomizer\\terminal.ico",
