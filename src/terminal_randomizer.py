@@ -55,10 +55,10 @@ def main():
     
 
     # If there isn't a cache file means it is the first time executing the program
-    if (not os.path.exists("..\\last_run_info.txt")):
+    if not (os.path.isfile("..\\input_files\\last_run_info.txt")):
+
         first_run(json_settings_path)
      
-
     # Get the number of photos in the last execution
     with open("..\\input_files\\last_run_info.txt", 'r') as last_run_info:
         last_run = int(last_run_info.readline())
