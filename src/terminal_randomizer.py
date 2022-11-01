@@ -3,15 +3,14 @@ import random
 import json
 import re
 
-# TODO
-# SAVE OLD PROFILES
-# MUDAR A FONT
-# Em vez de alterar o settings.json todo com um dump, alterar apenas o que é necessário
+from matplotlib.font_manager import json_load
 
+# TODO
+# LocalAppdata generic path
 
 
 # Import the settings from the preset_settings.json file and change the paths to generic
-def first_run():
+def first_run(json_settings_path):
     
     os.mkdir("..\\thumbnails")
 
@@ -19,11 +18,9 @@ def first_run():
     pre_load_images.main()
 
     # Find path to settings.json from input file and copy the preset settings into it
-    with open('..\\input_files\\input.txt', 'r') as f:
-        json_settings_path = f.readline().replace('\n', '')
-        
-    with open('..\\input_files\\preset_settings.json', 'r') as f:
-        preset_settings = json.load(f)
+
+    with open(json_settings_path, 'r') as preset:
+        preset_settings = json.load(preset)
 
     
     photos_path = os.path.abspath('..\\photos')
@@ -33,26 +30,28 @@ def first_run():
     preset_settings['profiles']['defaults']['experimental.pixelShaderPath'] = os.path.join(input_path, "Retro.hlsl")
     preset_settings['profiles']['defaults']['icon'] = os.path.join(input_path, "terminal.ico")
 
+    with open(json_settings_path, 'r') as f:
+        data = json.load(f)
+
+    preset_settings['profiles']['list'] = data['profiles']['list'] 
 
     with open(json_settings_path, 'w') as f:
-        f['profiles']['list'] = preset_settings['profiles']['list']
-        # json.dump(preset_settings, f, indent=4)
+        json.dump(preset_settings, f, indent=4)
 
 
 def main():
 
+    # Json Settings Path
+    json_settings_path = os.path.expandvars(r'%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json')
+    
     # Check if this is the first run
     if (not os.path.exists("..\\thumbnails")):
-        first_run()
+        first_run(json_settings_path)
 
-    # Find path to settings.json from input file
-    with open('..\\input_files\\input.txt', 'r') as f:
-        json_settings_path = f.readline().replace('\n', '')
-    
+
     # Load settings.json file
     with open(json_settings_path, 'r') as settings_file:
         settings = json.load(settings_file)
-        settings_file.close()
 
     # Choose random picture from folder
     photos_path = '..\\photos'
