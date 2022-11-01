@@ -5,10 +5,8 @@ A script that changes the appearance of a Windows Terminal, randomly selecting b
 ## Example
 
 
-<img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/hello_there.gif" width="600" height="300"/>
-
-![](https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/hello_there.gif?raw=true)
-![](https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/general_kenobi.gif?raw=true)
+<img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/hello_there.gif" width="600" height="350"/>
+<img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/general_kenobi.gif" width="600" height="350"/>
 
 
 
