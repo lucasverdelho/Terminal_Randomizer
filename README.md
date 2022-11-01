@@ -11,31 +11,36 @@ A script that changes the appearance of a Windows Terminal, randomly selecting b
 
 
 ## How to Use
-You will need to put some gifs on the **"photos"** folder in this repository in order for the script to do anything, so be sure to do that first.
 
 1. Make sure you have installed the Windows Terminal from the Microsoft Store.
 
 2. You will also need to have python installed and to have this repository downloaded somewhere on your pc where you will be able to remember it's location.
 
-3. Open your Windows Terminal and change the directory to:
+3. Go to the input.txt file on this repository and change the user to your own.
+
+4. Open your Windows Terminal and change the directory to:
 ```
 %The_Path_To_The_Repository%\Terminal_Randomizer\src
 ```
 where you change the Path to wherever you downloaded the repository.
 
-4. Run the following command:
+5. Run the following command:
 ```
 python terminal_randomizer.py
 ```
 
-5. If it changed, means everything is probably working
+6. If it changed, means everything is probably working. In case it didn't work, check the following segment: **"How to Find the Paths"**
+
+
+Note : 
+>You will need to put some gifs on the **"photos"** folder in this repository in order for the script to do anything, so be sure to do that first.
 
 
 Note :
 > I have included a preset that I use **settings.json** file which you will need to change the paths I have included, I may still implement an initializer later on, but for now manual changes are needed.
 
 Another Note :
-> I am using the font Source Code Pro Light
+> I am using the font Source Code Pro, which i really recommend you have installed for better legibility on the terminal. It is a free font found on google fonts: ```https://fonts.google.com/specimen/Source+Code+Pro```
 
 ## How to Find the Paths
 To find the settings.json file, this path usually works:
@@ -44,7 +49,7 @@ To find the settings.json file, this path usually works:
 C:\Users\{user}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\
 ```
 
-If you find the settings.json file, just go over to the input.txt file, and change the user there as well.
+If you find the settings.json file using this path, just go over to the input.txt file, and change the user there as well.
 
 
 I recommend using the voidtools' **Everything Search** for this, but the terminal executable is generally located in the path i have included in the **WinTerminal_Run.bat file**, being called **"wt.exe"**. 
