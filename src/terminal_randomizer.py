@@ -6,12 +6,15 @@ import re
 # TODO
 # SAVE OLD PROFILES
 # MUDAR A FONT
+# Em vez de alterar o settings.json todo com um dump, alterar apenas o que é necessário
 
 
 
 # Import the settings from the preset_settings.json file and change the paths to generic
 def first_run():
     
+    os.mkdir("..\\thumbnails")
+
     import pre_load_images
     pre_load_images.main()
 
@@ -22,6 +25,7 @@ def first_run():
     with open('..\\input_files\\preset_settings.json', 'r') as f:
         preset_settings = json.load(f)
 
+    
     photos_path = os.path.abspath('..\\photos')
     input_path = os.path.abspath('..\\input_files')
 
@@ -29,19 +33,17 @@ def first_run():
     preset_settings['profiles']['defaults']['experimental.pixelShaderPath'] = os.path.join(input_path, "Retro.hlsl")
     preset_settings['profiles']['defaults']['icon'] = os.path.join(input_path, "terminal.ico")
 
+
     with open(json_settings_path, 'w') as f:
-        json.dump(preset_settings, f, indent=4)
+        f['profiles']['list'] = preset_settings['profiles']['list']
+        # json.dump(preset_settings, f, indent=4)
 
 
 def main():
 
-    # Check if the thumbnails folder is empty
-    thumbnails_path = '..\\thumbnails'
-    thumbnails = os.listdir(thumbnails_path)
- 
-    if (len(thumbnails) == 0):
+    # Check if this is the first run
+    if (not os.path.exists("..\\thumbnails")):
         first_run()
-
 
     # Find path to settings.json from input file
     with open('..\\input_files\\input.txt', 'r') as f:
