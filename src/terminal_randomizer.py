@@ -5,9 +5,6 @@ import re
 
 from matplotlib.font_manager import json_load
 
-# TODO
-# LocalAppdata generic path
-
 
 # Import the settings from the preset_settings.json file and change the paths to generic
 def first_run(json_settings_path):
