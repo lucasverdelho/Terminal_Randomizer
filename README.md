@@ -7,9 +7,9 @@ A script that changes the appearance of a Windows Terminal, randomly selecting b
 <p align = "center">
     <img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/hello_there.gif" width="630" height=auto/>
     <img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/general_kenobi.gif" width="630" height="auto/>
- </p>
+</p>
 
-
+                                                                                                                                   
 ## How to Use
 
 1. Make sure you have installed the Windows Terminal from the Microsoft Store.
