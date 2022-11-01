@@ -1,12 +1,24 @@
 # Terminal_Randomizer
 A script that changes the appearance of a Windows Terminal, randomly selecting background, foreground colors as well as the background gif
 
-![](https://github.com/Terminal_Randomizer/reamde_assets/hello_there.gif)
 
-![](https://github.com/Terminal_Randomizer/reamde_assets/general_kenobi.gif)
+## Example
+
+
+<img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/hello_there.gif" width="600" height="350"/>
+<img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/general_kenobi.gif" width="600" height="350"/>
+
 
 
 ## How to Use
+1. Make sure you have installed the Windows Terminal from the Microsoft Store.
+
+2. You will also need to have python installed and to have this repository downloaded somewhere on your pc where you will be able to remember it's location.
+
+
+
+
+
 I have included a preset **settings.json** file which you will need to change the paths I have included, I may still implement an initializer later on, but for now manual changes will have to suffice.
 
 ### How to Find the Paths
