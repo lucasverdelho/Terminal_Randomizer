@@ -7,8 +7,6 @@ import re
 
 # Set the default color scheme
 def first_run(json_settings_path):
-    
-    os.mkdir("..\\thumbnails")
 
     import pre_load_images
     pre_load_images.main()
