@@ -39,61 +39,73 @@ def is_dark_color(color):
 
 
 
-# Define the path of the photos folder
-photos_path = '..\\photos'
-photos = os.listdir(photos_path)
-
-# Check if a thumbnail already exists for the gif, else create one, converting the GIF to a PNG
-for i in photos:
-    thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
-
-    if (os.path.exists(os.path.join(thumbnail_path, i[:-4] + ".png"))):
-        continue
-
-    # Convert Gif to PNG
-    img = Image.open(os.path.join(os.path.abspath(photos_path), i))
-    newImage = img.convert('RGBA')
-    bg = Image.new('RGBA', newImage.size)
-    image = Image.composite(newImage, bg, newImage)
-    image.save("..\\thumbnails\\zconverted" + i[:-4] + ".png")
-    img.close()
-
-
-# Define the path of the thumbnails folder
-thumbnails = os.listdir(os.path.abspath("..\\thumbnails"))
-thumbnails_path = "..\\thumbnails\\"
 
 
 
-# To get the colors from the thumbnails
-for i in thumbnails:
-    if (i[-4:] == ".txt"):
-        os.remove(os.path.join(thumbnails_path, i))
-        continue
+
+
+## Main Function
+
+def main():
+    # Define the path of the photos folder
+    photos_path = '..\\photos'
+    photos = os.listdir(photos_path)
+
+
+
+    # Check if a thumbnail already exists for the gif, else create one, converting the GIF to a PNG
+    for i in photos:
+        thumbnail_path = os.path.join(os.path.abspath("..\\thumbnails"), (i[:-4] + ".png"))
+
+        if (os.path.exists(os.path.join(thumbnail_path, i[:-4] + ".png"))):
+            continue
+
+        # Convert Gif to PNG
+        img = Image.open(os.path.join(os.path.abspath(photos_path), i))
+        newImage = img.convert('RGBA')
+        bg = Image.new('RGBA', newImage.size)
+        image = Image.composite(newImage, bg, newImage)
+        image.save("..\\thumbnails\\zconverted" + i[:-4] + ".png")
+        img.close()
+
+
+    # Define the path of the thumbnails folder
+    thumbnails = os.listdir(os.path.abspath("..\\thumbnails"))
+    thumbnails_path = "..\\thumbnails\\"
+
+
+
+    # To get the colors from the thumbnails
+    for i in thumbnails:
+        if (i[-4:] == ".txt"):
+            os.remove(os.path.join(thumbnails_path, i))
+            continue
     
-    # Get the colors from the image into a pallette and write them 
-    # to a txt file with the same name as the original gif
-    temp_path = os.path.join(thumbnails_path, i)
-    img = ColorThief(temp_path)
-    palette = img.get_palette(color_count = 3)
-    filename = thumbnails_path + i[1:-4] + ".txt"
-    filename = filename.replace("converted", "")
+        # Get the colors from the image into a pallette and write them 
+        # to a txt file with the same name as the original gif
+        temp_path = os.path.join(thumbnails_path, i)
+        img = ColorThief(temp_path)
+        palette = img.get_palette(color_count = 3)
+        filename = thumbnails_path + i[1:-4] + ".txt"
+        filename = filename.replace("converted", "")
 
 
-    try:
-        with open(filename, "w") as f:
+        try:
+            with open(filename, "w") as f:
             
-            temporary_complimentary = color_variant(get_complementary(rgb_to_hex(palette[0])),80)
-            if (is_dark_color(palette[0])):
-                temporary_complimentary = color_variant(rgb_to_hex(palette[0]), 120)
+                temporary_complimentary = color_variant(get_complementary(rgb_to_hex(palette[0])),80)
+                if (is_dark_color(palette[0])):
+                    temporary_complimentary = color_variant(rgb_to_hex(palette[0]), 120)
             
-            f.write(temporary_complimentary + "\n")
-            for i in palette:
-                # if(i == palette[0]):
-                #     f.write(color_variant(rgb_to_hex(i), 50))
-                f.write(rgb_to_hex(i) + "\n")
-    except Exception as e:
-        print(e)
+                f.write(temporary_complimentary + "\n")
+                for i in palette:
+                    # if(i == palette[0]):
+                    #     f.write(color_variant(rgb_to_hex(i), 50))
+                    f.write(rgb_to_hex(i) + "\n")
+        except Exception as e:
+            print(e)
+
+
 
 
 

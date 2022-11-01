@@ -4,6 +4,18 @@ import json
 import re
 
 
+
+
+# Check if the thumbnails folder is empty
+thumbnails_path = '..\\thumbnails'
+thumbnails = os.listdir(thumbnails_path)
+
+if (len(thumbnails) == 0):
+    import pre_load_images
+    print("shit")
+    pre_load_images.main()
+
+
 # Find path to settings.json from input file
 with open('..\\input_files\\input.txt', 'r') as f:
     json_settings_path = f.readline().replace('\n', '')
