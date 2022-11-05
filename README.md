@@ -38,11 +38,7 @@ python terminal_randomizer.py
 
 
 Note : 
->You will need to put some gifs on the **"photos"** folder in this repository in order for the script to do anything, so be sure to do that first.
-
-
-Another Note :
-> I have included a preset that I use **settings.json** file which you will need to change the paths I have included, I may still implement an initializer later on, but for now manual changes are needed.
+>To add your own gifs, just copy them to the photos folder
 
 Yes, Another Note :
 > I am using the font Source Code Pro, which i really recommend you have installed for better legibility on the terminal. It is a free font found on google fonts: ```https://fonts.google.com/specimen/Source+Code+Pro```. To add this, simply open the settings.json of your windows terminal, go to the defaults and add 
