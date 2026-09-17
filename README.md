@@ -1,6 +1,6 @@
 # Terminal_Randomizer
-
 A script that changes the appearance of Windows Terminal: it picks a random background GIF/image and derives matching background, text, cursor, selection and tab colours from it.
+
 
 ## Example
 
@@ -9,6 +9,7 @@ A script that changes the appearance of Windows Terminal: it picks a random back
     <img src="readme_assets/general_kenobi.gif" width="630"/>
 </p>
 
+
 ## How to Use
 
 1. Install Windows Terminal (Microsoft Store or winget) and Python 3.8+.
@@ -16,48 +17,61 @@ A script that changes the appearance of Windows Terminal: it picks a random back
 2. Download this repository anywhere you like. No paths need editing.
 
 3. Install the one dependency:
-
 ```
 pip install -r requirements.txt
 ```
 
-4. Add your own backgrounds to the `photos` folder (`.gif`, `.png`, `.jpg`, `.jpeg`, `.bmp`).
-
-5. Run it from any folder:
-
+4. Run it from any folder:
 ```
 python path\to\Terminal_Randomizer\src\terminal_randomizer.py
 ```
-
 or just double-click `WinTerminal_Run.bat`, which runs the script and then opens Terminal.
 
 The first run analyses every image (a few seconds) and saves a copy of your original settings to `input_files\settings_backup.json`. Later runs only analyse new or changed images.
 
-The repository does not include any background images. Add your own to the `photos` folder before running it.
+To add your own backgrounds, copy them into the `photos` folder (`.gif`, `.png`, `.jpg`, `.jpeg`, `.bmp`).
+
 
 ## Options
 
-| Option              | What it does                                                                                                |
-| ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `--profile NAME`    | Only theme this profile (repeatable). By default all profiles are themed via `profiles.defaults`.           |
-| `--settings PATH`   | Use this `settings.json` instead of auto-detecting it (or set the `WT_SETTINGS_PATH` environment variable). |
-| `--photos DIR`      | Use a different image folder.                                                                               |
-| `--shader`          | Turn on the retro CRT shader (`input_files\Retro.hlsl`). It is off by default.                              |
-| `--font-colors`     | Pick the text colour from `input_files\font_colors.txt` instead of the image.                               |
-| `--complementary`   | Use the complementary hue of the image for text (closer to the original look).                              |
-| `--clean-overrides` | Remove theme colours/backgrounds set directly on individual profiles, so they follow the random theme.      |
-| `--rebuild-cache`   | Re-analyse all images.                                                                                      |
-| `--dry-run`         | Show what would change without writing anything.                                                            |
-| `--restore`         | Put back the settings backed up on the first run.                                                           |
+| Option | What it does |
+| --- | --- |
+| `--profile NAME` | Only theme this profile (repeatable). By default all profiles are themed via `profiles.defaults`. |
+| `--settings PATH` | Use this `settings.json` instead of auto-detecting it (or set the `WT_SETTINGS_PATH` environment variable). |
+| `--photos DIR` | Use a different image folder. |
+| `--shader` | Turn on the retro CRT shader (`input_files\Retro.hlsl`). It is off by default. |
+| `--acrylic` | Blur whatever is behind the window (Acrylic). Uses 75% opacity unless `--opacity` is given. |
+| `--opacity PERCENT` | Window opacity from 0 to 100. On its own this gives plain transparency; with `--acrylic` it sets the Acrylic opacity. |
+| `--opacity auto` | Pick the opacity from the image's brightness: brighter images get a more solid window so text stays readable. |
+| `--font-colors` | Pick the text colour from `input_files\font_colors.txt` instead of the image. |
+| `--complementary` | Use the complementary hue of the image for text (closer to the original look). |
+| `--clean-overrides` | Remove theme colours/backgrounds set directly on individual profiles, so they follow the random theme. |
+| `--rebuild-cache` | Re-analyse all images. |
+| `--dry-run` | Show what would change without writing anything. |
+| `--restore` | Put back the settings backed up on the first run. |
+
+### Transparency
+
+Without `--acrylic` or `--opacity`, the window is solid. The two options combine like this:
+
+| Command | Result |
+| --- | --- |
+| `--opacity 85` | Transparent, 85% opaque |
+| `--acrylic` | Blurred, 75% opaque |
+| `--acrylic --opacity 60` | Blurred, 60% opaque |
+| `--acrylic --opacity auto` | Blurred, opacity based on the image |
+
+Transparency without Acrylic only works on Windows 11. On Windows 10, use `--acrylic`. Either way, **Transparency effects** must be on in Windows Settings under **Personalization** > **Colors**.
+
+`--opacity` controls how much of the desktop shows through the window. How visible the background image is inside the window is a separate setting that the script still randomises.
+
+### Using options with the batch file
 
 To use options every time you launch through `WinTerminal_Run.bat`, add them to the line that runs the script. For example, to always turn on the retro shader, change:
-
 ```
 %PY% "%~dp0src\terminal_randomizer.py" %*
 ```
-
 to:
-
 ```
 %PY% "%~dp0src\terminal_randomizer.py" --shader %*
 ```
@@ -66,10 +80,10 @@ The `settings.json` is found automatically for the Store (stable, Preview, Canar
 
 Note: the script rewrites `settings.json`, so any `//` comments in it are dropped (the backup keeps them).
 
+
 ## Font
 
 I use Source Code Pro, which I recommend for legibility. It is free on Google Fonts: https://fonts.google.com/specimen/Source+Code+Pro. To use it, open your `settings.json` and add this under `profiles` → `defaults`:
-
 ```
 "font": {
     "face": "Source Code Pro",
@@ -77,6 +91,7 @@ I use Source Code Pro, which I recommend for legibility. It is free on Google Fo
     "weight": "light"
 },
 ```
+
 
 ## How do I make it go brr every time I open the terminal?
 

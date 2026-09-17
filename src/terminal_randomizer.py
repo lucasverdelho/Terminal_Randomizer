@@ -4,6 +4,10 @@ photos folder as the background and derives matching colours from it.
 
 Examples:
     python terminal_randomizer.py
+    python terminal_randomizer.py --opacity 85              # transparent window
+    python terminal_randomizer.py --acrylic                 # blurred, 75% opaque
+    python terminal_randomizer.py --acrylic --opacity 60    # blurred, 60% opaque
+    python terminal_randomizer.py --acrylic --opacity auto  # opacity from image brightness
     python terminal_randomizer.py --profile "PowerShell" --profile "Ubuntu"
     python terminal_randomizer.py --settings "D:\\dotfiles\\wt\\settings.json"
     python terminal_randomizer.py --restore
@@ -40,8 +44,10 @@ FONT_COLORS_FILE = images.INPUT_DIR / "font_colors.txt"
 
 SHADER_KEY = "experimental.pixelShaderPath"
 MANAGED_KEYS = ("backgroundImage", "backgroundImageOpacity", "background", "foreground",
-                "cursorColor", "selectionBackground", "tabColor")
-OPACITY_RANGE = (0.15, 0.30)
+                "cursorColor", "selectionBackground", "tabColor", "useAcrylic", "opacity")
+
+IMAGE_OPACITY_RANGE = (0.15, 0.30)  # how strongly the background image shows
+DEFAULT_ACRYLIC_OPACITY = 75        # window opacity for --acrylic without --opacity
 
 
 # --------------------------------------------------------------------------
@@ -181,8 +187,7 @@ def target_profiles(settings: dict, names: list[str]) -> list[dict]:
 
 
 def warn_about_overrides(settings: dict) -> None:
-    """Values set on a single profile beat 'defaults'. Older versions of this
-    script wrote to profiles.list[1], so point those out."""
+    """Values set on a single profile beat 'defaults', so point those out."""
     for profile in settings["profiles"].get("list", []):
         keys = [k for k in MANAGED_KEYS if k in profile]
         if keys:
@@ -192,11 +197,12 @@ def warn_about_overrides(settings: dict) -> None:
 
 
 # --------------------------------------------------------------------------
-# Main
+# Helpers
 # --------------------------------------------------------------------------
 def _is_our_shader(value) -> bool:
     if not isinstance(value, str) or not value:
         return False
+
     def norm(path):
         return os.path.normcase(os.path.abspath(os.path.expandvars(path)))
     return norm(value) == norm(str(SHADER_FILE))
@@ -217,6 +223,46 @@ def load_font_colors() -> list[str]:
     return re.findall(r"#[0-9a-fA-F]{6}\b", text)
 
 
+def window_settings(acrylic: bool, opacity, palette) -> dict:
+    """useAcrylic/opacity for the chosen transparency mode.
+
+    acrylic  opacity   result
+    no       -         solid window (opacity 100)
+    no       N/auto    plain transparency
+    yes      -         blurred, DEFAULT_ACRYLIC_OPACITY
+    yes      N/auto    blurred at that opacity
+    """
+    if opacity == "auto":
+        opacity = images.adaptive_opacity(palette)
+    elif opacity is None:
+        opacity = DEFAULT_ACRYLIC_OPACITY if acrylic else 100
+    return {"useAcrylic": acrylic, "opacity": opacity}
+
+
+def describe_window(window: dict) -> str:
+    if window["useAcrylic"]:
+        return f"acrylic, {window['opacity']}% opaque"
+    if window["opacity"] < 100:
+        return f"transparent, {window['opacity']}% opaque"
+    return "solid"
+
+
+# --------------------------------------------------------------------------
+# Command-line arguments
+# --------------------------------------------------------------------------
+def opacity_arg(value: str):
+    """argparse type for --opacity: 'auto' or a whole number 0-100."""
+    if value.lower() == "auto":
+        return "auto"
+    try:
+        number = int(value.rstrip("%"))
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"expected a number 0-100 or 'auto', got {value!r}")
+    if not 0 <= number <= 100:
+        raise argparse.ArgumentTypeError(f"must be between 0 and 100, got {number}")
+    return number
+
+
 def parse_args(argv):
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -225,26 +271,37 @@ def parse_args(argv):
                         help="folder with background images (default: %(default)s)")
     parser.add_argument("--profile", action="append", default=[], metavar="NAME",
                         help="only change this profile (repeatable). Default: all profiles")
-    parser.add_argument("--shader", action="store_true",
-                        help="turn on the retro CRT shader (off by default)")
-    parser.add_argument("--font-colors", action="store_true",
-                        help="pick text colour from input_files/font_colors.txt instead")
-    parser.add_argument("--complementary", action="store_true",
-                        help="use the complementary hue for text (the old look)")
-    parser.add_argument("--clean-overrides", action="store_true",
-                        help="remove theme keys set on individual profiles")
-    parser.add_argument("--rebuild-cache", action="store_true",
-                        help="re-analyse all images")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="show the changes without writing them")
-    parser.add_argument("--restore", action="store_true",
-                        help="put back the settings backed up on the first run")
+
+    look = parser.add_argument_group("appearance")
+    look.add_argument("--shader", action="store_true",
+                      help="turn on the retro CRT shader (off by default)")
+    look.add_argument("--acrylic", action="store_true",
+                      help="blur what's behind the window (Acrylic). "
+                           f"Uses {DEFAULT_ACRYLIC_OPACITY}%% opacity unless --opacity is given")
+    look.add_argument("--opacity", type=opacity_arg, metavar="PERCENT|auto",
+                      help="window opacity 0-100. Without --acrylic this is plain "
+                           "transparency. 'auto' picks it from the image's brightness")
+    look.add_argument("--font-colors", action="store_true",
+                      help="pick text colour from input_files/font_colors.txt instead")
+    look.add_argument("--complementary", action="store_true",
+                      help="use the complementary hue for text (the old look)")
+
+    maint = parser.add_argument_group("maintenance")
+    maint.add_argument("--clean-overrides", action="store_true",
+                       help="remove theme keys set on individual profiles")
+    maint.add_argument("--rebuild-cache", action="store_true", help="re-analyse all images")
+    maint.add_argument("--dry-run", action="store_true",
+                       help="show the changes without writing them")
+    maint.add_argument("--restore", action="store_true",
+                       help="put back the settings backed up on the first run")
     return parser.parse_args(argv)
 
 
+# --------------------------------------------------------------------------
+# Main
+# --------------------------------------------------------------------------
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
-    use_shader = args.shader
     settings_path = find_settings(args.settings)
 
     if args.restore:
@@ -268,7 +325,8 @@ def main(argv: list[str] | None = None) -> None:
     targets = target_profiles(settings, args.profile)
 
     photo = pick_photo(photos, targets[0].get("backgroundImage"))
-    scheme = images.build_scheme(palettes[photo.name], complementary=args.complementary)
+    palette = palettes[photo.name]
+    scheme = images.build_scheme(palette, complementary=args.complementary)
     if args.font_colors:
         font_colors = load_font_colors()
         if font_colors:
@@ -276,16 +334,20 @@ def main(argv: list[str] | None = None) -> None:
         else:
             print(f"No colours found in {FONT_COLORS_FILE}; using image colours.")
 
+    # backgroundImageOpacity = how visible the image is inside the window;
+    # opacity = how much of the desktop shows through the window itself.
+    window = window_settings(args.acrylic, args.opacity, palette)
     changes = {
         **scheme,
         "backgroundImage": str(photo),
-        "backgroundImageOpacity": round(random.uniform(*OPACITY_RANGE), 2),
+        "backgroundImageOpacity": round(random.uniform(*IMAGE_OPACITY_RANGE), 2),
+        **window,
     }
 
     for profile in targets:
         profile.update(changes)
         profile.setdefault("padding", "15")
-        if not use_shader:
+        if not args.shader:
             # Only remove our own shader; leave any shader you set up yourself.
             if _is_our_shader(profile.get(SHADER_KEY)):
                 del profile[SHADER_KEY]
@@ -302,9 +364,10 @@ def main(argv: list[str] | None = None) -> None:
         warn_about_overrides(settings)
 
     print(f"Background: {photo.name}")
-    print(f"  {'shader':22} {'on' if use_shader else 'off'}")
+    print(f"  {'shader':22} {'on' if args.shader else 'off'}")
+    print(f"  {'window':22} {describe_window(window)}")
     for key, value in changes.items():
-        if key != "backgroundImage":
+        if key not in ("backgroundImage", *window):
             print(f"  {key:22} {value}")
 
     if args.dry_run:

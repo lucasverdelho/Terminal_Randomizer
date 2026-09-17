@@ -241,6 +241,21 @@ def build_scheme(palette: list[list[int]], complementary: bool = False) -> dict[
     }
 
 
+def adaptive_opacity(palette: list[list[int]], low: int = 60, high: int = 90) -> int:
+    """Window opacity (percent) from how bright the image is.
+
+    Bright, busy images stay more opaque so the desktop behind the window
+    doesn't make text harder to read; dark images can be more see-through.
+    """
+    total = sum(p[3] for p in palette) or 1
+    brightness = sum((0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2]) / 255 * p[3]
+                     for p in palette) / total
+    # Most wallpapers sit between ~10% and ~60% brightness; spread that
+    # range over low..high so the difference is actually visible.
+    t = _clamp((brightness - 0.10) / 0.50, 0.0, 1.0)
+    return round(low + (high - low) * t)
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
