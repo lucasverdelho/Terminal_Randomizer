@@ -5,3 +5,5 @@ input_files/settings_backup.json
 thumbnails/
 input_files/last_run_info.txt
 input_files/json_settings_backup.json
+photos/*
+!photos/.gitkeep
