@@ -1,3 +1,8 @@
+// Based on Microsoft's Windows Terminal Retro pixel shader.
+// Original: https://github.com/microsoft/terminal/blob/main/samples/PixelShaders/Retro.hlsl
+// Copyright (c) Microsoft Corporation
+// Licensed under the MIT License.
+
 // The original retro pixel shader
 Texture2D shaderTexture;
 SamplerState samplerState;

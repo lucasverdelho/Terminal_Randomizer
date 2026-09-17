@@ -1,48 +1,70 @@
 # Terminal_Randomizer
-A script that changes the appearance of a Windows Terminal, randomly selecting background, foreground colors as well as the background gif
+A script that changes the appearance of Windows Terminal: it picks a random background GIF/image and derives matching background, text, cursor, selection and tab colours from it.
 
 
 ## Example
 
-<p align = "center">
-    <img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/hello_there.gif" width="630" height=auto/>
-    <img src="https://github.com/LucasVerdelho/Terminal_Randomizer/blob/main/readme_assets/general_kenobi.gif" width="630" height=auto/>
+<p align="center">
+    <img src="readme_assets/hello_there.gif" width="630"/>
+    <img src="readme_assets/general_kenobi.gif" width="630"/>
 </p>
-                                                                                                                                   
-                                                                                                                                  
+
+
 ## How to Use
 
-1. Make sure you have installed the Windows Terminal from the Microsoft Store.
+1. Install Windows Terminal (Microsoft Store or winget) and Python 3.8+.
 
-2. You will also need to have python installed and to have this repository downloaded somewhere on your pc where you will be able to remember it's location.
+2. Download this repository anywhere you like. No paths need editing.
 
-3. Excute the following command in order to install necessary libraries:
+3. Install the one dependency:
 ```
-pip install pillow colorthief
-```
-
-4. Go to the input.txt file on this repository and change the user to your own.
-
-5. Open your Windows Terminal and change the directory to:
-```
-%The_Path_To_The_Repository%\Terminal_Randomizer\src
-```
-where you change the Path to wherever you downloaded the repository.
-
-6. Run the following command:
-```
-python terminal_randomizer.py
+pip install -r requirements.txt
 ```
 
-7. If it changed, means everything is probably working. In case it didn't work, check the following segment: **"How to Find the Paths"**
+4. Run it from any folder:
+```
+python path\to\Terminal_Randomizer\src\terminal_randomizer.py
+```
+or just double-click `WinTerminal_Run.bat`, which runs the script and then opens Terminal.
+
+The first run analyses every image (a few seconds) and saves a copy of your original settings to `input_files\settings_backup.json`. Later runs only analyse new or changed images.
+
+To add your own backgrounds, copy them into the `photos` folder (`.gif`, `.png`, `.jpg`, `.jpeg`, `.bmp`).
 
 
-Note : 
->To add your own gifs, just copy them to the photos folder
+## Options
 
-Yes, Another Note :
-> I am using the font Source Code Pro, which i really recommend you have installed for better legibility on the terminal. It is a free font found on google fonts: ```https://fonts.google.com/specimen/Source+Code+Pro```. To add this, simply open the settings.json of your windows terminal, go to the defaults and add 
-```            
+| Option | What it does |
+| --- | --- |
+| `--profile NAME` | Only theme this profile (repeatable). By default all profiles are themed via `profiles.defaults`. |
+| `--settings PATH` | Use this `settings.json` instead of auto-detecting it (or set the `WT_SETTINGS_PATH` environment variable). |
+| `--photos DIR` | Use a different image folder. |
+| `--shader` | Turn on the retro CRT shader (`input_files\Retro.hlsl`). It is off by default. |
+| `--font-colors` | Pick the text colour from `input_files\font_colors.txt` instead of the image. |
+| `--complementary` | Use the complementary hue of the image for text (closer to the original look). |
+| `--clean-overrides` | Remove theme colours/backgrounds set directly on individual profiles, so they follow the random theme. |
+| `--rebuild-cache` | Re-analyse all images. |
+| `--dry-run` | Show what would change without writing anything. |
+| `--restore` | Put back the settings backed up on the first run. |
+
+To use options every time you launch through `WinTerminal_Run.bat`, add them to the line that runs the script. For example, to always turn on the retro shader, change:
+```
+%PY% "%~dp0src\terminal_randomizer.py" %*
+```
+to:
+```
+%PY% "%~dp0src\terminal_randomizer.py" --shader %*
+```
+
+The `settings.json` is found automatically for the Store (stable, Preview, Canary) and unpackaged (Scoop, Chocolatey, portable) installs. If yours lives elsewhere, open Terminal, go to Settings, click **Open JSON file**, and pass that path with `--settings`.
+
+Note: the script rewrites `settings.json`, so any `//` comments in it are dropped (the backup keeps them).
+
+
+## Font
+
+I use Source Code Pro, which I recommend for legibility. It is free on Google Fonts: https://fonts.google.com/specimen/Source+Code+Pro. To use it, open your `settings.json` and add this under `profiles` → `defaults`:
+```
 "font": {
     "face": "Source Code Pro",
     "size": 20,
@@ -51,56 +73,10 @@ Yes, Another Note :
 ```
 
 
-## How to Find the Paths
-To find the settings.json file, this path usually works:
-(You will have to change the user to your own)
-```
-C:\Users\{user}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\
-```
+## How do I make it go brr every time I open the terminal?
 
-If you find the settings.json file using this path, just go over to the input.txt file, and change the user there as well.
+1. Right-click `WinTerminal_Run.bat` → **Show more options** → **Send to** → **Desktop (create shortcut)**.
+2. Right-click the new shortcut → **Properties**, set **Run** to **Minimized** so the console window doesn't flash, and optionally click **Change Icon** to pick `input_files\terminal.ico`.
+3. Pin the shortcut to Start or the taskbar and use it instead of the normal Terminal icon.
 
-
-I recommend using the voidtools' **Everything Search** for this, but the terminal executable is generally located in the path i have included in the **WinTerminal_Run.bat file**, being called **"wt.exe"**. 
-
-For the retro shader effects on the terminal just change the path of the .hlsl file to where you downloaded the repository.
-
-
-
-## How do i make it go brr every time i open the terminal?
-Unfortunately there is no clean solution that I have found to this problem, so we will have to do with a janky Windows type beat ugly fix.
-
-1. Open the batch file that is included in this repository.
-
-2. Make sure the **"cd"** command will place you in the right path
-
-3. Change the wt.exe path to where the Windows Terminal is installed on your pc
-
-4. Open Task Scheduler and make a new folder named "WinTerminal" inside the Task Scheduler Library folder.
-
-5. Create a new Task and also name it "WinTerminal" 
-
-6. Select the option "Run with the highest privileges" and on the "Configure for:" select "Windows 10"
-
-7. Go to the Actions tab and make a new action, it will default to Start a Program which is what we want.
-
-8. Browse to the WinTerminal_Run.bat file and save the action
-
-9. Save the task and close Task Scheduler
-
-10. Go to your Desktop and create a new shortcut
-
-11. If you followed the naming convention the location of the item shall simple be:
-```
-C:\Windows\System32\schtasks.exe /RUN /TN "WinTerminal\Winterminal"
-```
-Else, make sure to reopen the TaskScheduler and check the path to your task
-
-12. Name the Shortcut and you are all set!
-
-
-Note: 
->You can also change the icon to the terminal.ico from Windows, I will include a copy of it in the repository
-
-
-
+If you want Terminal to open as administrator, you can still use the Task Scheduler route instead: create a task with **Run with highest privileges** whose action starts `WinTerminal_Run.bat`, then make a shortcut to `C:\Windows\System32\schtasks.exe /RUN /TN "YourTaskName"`.
